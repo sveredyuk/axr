@@ -5,15 +5,14 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'axr/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = 'axr'
-  spec.version       = AxR::VERSION
-  spec.authors       = ['Volodya Sveredyuk']
-  spec.email         = ['sveredyuk@gmail.com']
-
-  spec.summary       = 'Code checker for AxR compliance.'
-  spec.description   = 'Code checker for AxR compliance.'
-  spec.homepage      = 'https://github.com/sveredyuk/axr'
-  spec.license       = 'MIT'
+  spec.name        = 'axr'
+  spec.version     = AxR::VERSION
+  spec.authors     = ['Volodya Sveredyuk']
+  spec.email       = ['sveredyuk@gmail.com']
+  spec.summary     = 'Code checker for AxR compliance.'
+  spec.description = 'Code checker for AxR compliance.'
+  spec.homepage    = 'https://github.com/sveredyuk/axr'
+  spec.license     = 'MIT'
 
   spec.metadata['allowed_push_host'] = 'https://rubygems.org/'
 
