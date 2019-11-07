@@ -7,7 +7,6 @@ RSpec.describe AxR::Runner do
     context 'no args' do
       it 'all dir/files' do
         runner = described_class.new
-        expect(runner.files_to_scan.size).to eq 9
         expect(runner.files_to_scan).to eq Dir.glob('**/*.rb')
       end
     end
