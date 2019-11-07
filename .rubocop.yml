@@ -1,0 +1,36 @@
+require: rubocop-rails
+
+AllCops:
+  TargetRubyVersion: 2.6
+  Exclude:
+    - bin/*
+
+Style/Documentation:
+  Enabled: false
+
+Metrics/LineLength:
+  Max: 120
+
+Metrics/BlockLength:
+  ExcludedMethods: [
+    'describe', 'xdescribe', 'context',  'xcontext', 'it', 'xit', 'let', 'before', 'after', 'aggregate_failures'
+  ]
+
+
+Metrics/MethodLength:
+  Max: 15
+
+Metrics/ClassLength:
+  Max: 150
+
+Layout/AlignHash:
+  EnforcedColonStyle: table
+  EnforcedHashRocketStyle: table
+
+Lint/AmbiguousBlockAssociation:
+  Exclude:
+    - 'spec/*'
+    - 'spec/**/*'
+    - 'spec/***/**/*'
+    - 'spec/****/***/**/*'
+    - 'spec/*****/****/***/*'
