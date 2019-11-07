@@ -1,5 +1,6 @@
 #!/usr/bin/env ruby
+# frozen_string_literal: true
 
 require 'axr'
 
-puts "AXR! #{ARGV[0]}"
+AxR::Runner.new(ARGV).invoke

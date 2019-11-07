@@ -4,6 +4,7 @@ AllCops:
   TargetRubyVersion: 2.6
   Exclude:
     - bin/*
+    - Guardfile
 
 Style/Documentation:
   Enabled: false
