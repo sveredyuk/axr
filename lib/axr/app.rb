@@ -23,7 +23,20 @@ module AxR
     def layer(layer_name, options = {})
       check_name_conflict!(layer_name)
 
-      layers << AxR::Layer.new(layer_name, options)
+      layers << AxR::Layer.new(layer_name, layers.size, options)
+    end
+
+    def layer_names
+      layers.map(&:name).map(&:to_s)
+    end
+
+    def legal?(context, dependncy)
+      ctx = layers.find { |l| l.name.to_s == context.to_s }
+      dep = layers.find { |l| l.name.to_s == dependncy.to_s }
+
+      return false unless ctx && dep
+
+      ctx.level < dep.level
     end
 
     private
@@ -31,9 +44,10 @@ module AxR
     def check_name_conflict!(layer_name)
       return unless layers.map(&:name).include?(layer_name)
 
-      raise LayerConflictError, "Layer #{layer_name} is already defined in the layout"
+      raise LayerConflictError, "Layer #{layer_name} is already defined in the app"
     end
 
+    # Use only for testing purpose!
     def reset
       @layers = []
     end
