@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'axr/app'
+require 'axr/cli'
 require 'axr/runner'
 require 'axr/version'
 

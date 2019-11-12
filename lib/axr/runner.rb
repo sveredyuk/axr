@@ -1,27 +1,31 @@
 # frozen_string_literal: true
 
-require 'colorized_string'
+require 'axr/scanner'
+require 'axr/formatters/default'
 
 module AxR
   class Runner
-    DOT = '.'
     DOT_RB = '.rb'
 
-    attr_reader :args, :target
+    attr_reader :target, :formatter
 
-    def initialize(args = nil)
-      @args   = args
-      @target = args[0] if args
+    def initialize(target = nil, formatter: AxR::Formatters::Default.new)
+      @target    = target
+      @formatter = formatter
     end
 
     def invoke
-      STDOUT.puts('AXR to work!')
+      files_with_warnings = files_to_scan.each_with_object({}) do |file_path, issues|
+        scan_result = AxR::Scanner.new(file_path: file_path).scan
+        issues[file_path] = scan_result.warnings if scan_result.warnings.any?
+        formatter.single_file(scan_result, file_path)
+      end
 
-      files_to_scan.each { |_file| STDOUT.print ColorizedString[DOT].colorize(:green) }
+      formatter.summary(files_to_scan, files_with_warnings)
 
-      STDOUT.puts
-      STDOUT.puts
-      STDOUT.puts("#{files_to_scan.size} files scanned. 0 issues detected")
+      # exit 1 if files_with_warnings.any?
+
+      files_with_warnings
     end
 
     def files_to_scan

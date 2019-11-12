@@ -38,6 +38,25 @@ RSpec.describe AxR::Scanner do
       end
     end
 
+    context 'no context' do
+      let(:file_path) { 'spec/examples/one/lib/api/no_context.rb' }
+
+      it 'extract file entities' do
+        expect(result).to be_instance_of(AxR::Scanner)
+
+        expect(result.context).to                eq nil
+        expect(result.dependecies.size).to       eq 2
+        expect(result.dependecies[0]).to         be_instance_of(AxR::Scanner::Detection)
+        expect(result.dependecies[0].loc).to     eq '@users = Repo::User.all'
+        expect(result.dependecies[0].loc_num).to eq 5
+        expect(result.dependecies[1]).to         be_instance_of(AxR::Scanner::Detection)
+        expect(result.dependecies[1].loc).to     eq 'Logic::CreateUser.call(params)'
+        expect(result.dependecies[1].loc_num).to eq 9
+
+        expect(result.warnings).to eq []
+      end
+    end
+
     context 'mid level' do
       let(:file_path) { 'spec/examples/one/lib/logic/logic.rb' }
 

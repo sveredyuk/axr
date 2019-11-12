@@ -14,20 +14,25 @@ module AxR
       @context     = nil
     end
 
+    # rubocop:disable Metrics/AbcSize
     def scan
       File.open(file_path).each.with_index do |line, index|
         loc_num = index + 1
-        line_detection = AxR.app.layer_names.detect { |layer| line.include?(layer) }
 
-        next unless line_detection
+        line_detection    = AxR.app.layer_names.detect { |layer| line.include?(layer) }
+        line_detection    = check_space_before(line, line_detection)
+        context_detection = AxR.app.layer_names.detect { |layer| line.include?("module #{layer}") }
 
-        detect_context(line_detection,    line, loc_num) unless context
+        next unless line_detection || context_detection
+
+        detect_context(context_detection, line, loc_num) if context_detection && !context
         detect_dependency(line_detection, line, loc_num)
-        detect_warning(line_detection,    line, loc_num)
+        detect_warning(line_detection,    line, loc_num) if context
       end
 
       self
     end
+    # rubocop:enable Metrics/AbcSize
 
     private
 
@@ -36,7 +41,7 @@ module AxR
     end
 
     def detect_dependency(value, loc, loc_num)
-      return if value == context.name
+      return if context && value == context.name
 
       @dependecies << Detection.new(name: value, loc: cleanup_loc(loc), loc_num: loc_num)
     end
@@ -52,6 +57,14 @@ module AxR
 
     def cleanup_loc(loc)
       loc.chomp.strip
+    end
+
+    SPACE = ' '
+
+    def check_space_before(line, line_detection)
+      return unless line_detection
+
+      line_detection if line[line.index(line_detection) - 1] == SPACE
     end
   end
 end
