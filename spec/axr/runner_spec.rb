@@ -15,7 +15,7 @@ RSpec.describe AxR::Runner do
     end
 
     context 'scan files' do
-      let(:file_path) { 'spec/examples/one/lib/logic/logic.rb' }
+      let(:file_path) { 'spec/examples/one/lib/logic.rb' }
 
       it 'scan single file with default formatter' do
         runner = described_class.new(file_path)
@@ -38,31 +38,31 @@ RSpec.describe AxR::Runner do
 
     context 'with args' do
       it 'only given file' do
-        runner = described_class.new('spec/examples/one/lib/api/api.rb')
+        runner = described_class.new('spec/examples/one/lib/api.rb')
         expect(runner.files_to_scan.size).to eq 1
-        expect(runner.files_to_scan).to eq ['spec/examples/one/lib/api/api.rb']
+        expect(runner.files_to_scan).to eq ['spec/examples/one/lib/api.rb']
       end
 
       it 'scan given dir with single file' do
-        runner = described_class.new('spec/examples/one/lib/api')
-        expect(runner.files_to_scan.size).to eq 2
+        runner = described_class.new('spec/examples/one/lib/isolated')
+        expect(runner.files_to_scan.size).to eq 1
         expect(runner.files_to_scan).to eq(
           [
-            'spec/examples/one/lib/api/api.rb',
-            'spec/examples/one/lib/api/no_context.rb'
+            'spec/examples/one/lib/isolated/isolated.rb'
           ]
         )
       end
 
       it 'scan given dir' do
         runner = described_class.new('spec/examples/one/lib')
-        expect(runner.files_to_scan.size).to eq 4
+        expect(runner.files_to_scan.size).to eq 5
         expect(runner.files_to_scan).to eq(
           [
-            'spec/examples/one/lib/logic/logic.rb',
-            'spec/examples/one/lib/api/api.rb',
-            'spec/examples/one/lib/api/no_context.rb',
-            'spec/examples/one/lib/repo/repo.rb'
+            'spec/examples/one/lib/repo.rb',
+            'spec/examples/one/lib/api.rb',
+            'spec/examples/one/lib/logic.rb',
+            'spec/examples/one/lib/isolated/isolated.rb',
+            'spec/examples/one/lib/no_context.rb'
           ]
         )
       end

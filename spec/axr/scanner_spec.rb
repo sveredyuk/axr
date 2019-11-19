@@ -19,7 +19,7 @@ RSpec.describe AxR::Scanner do
 
   describe '#scan' do
     context 'top level' do
-      let(:file_path) { 'spec/examples/one/lib/api/api.rb' }
+      let(:file_path) { 'spec/examples/one/lib/api.rb' }
 
       it 'extract file entities' do
         expect(result).to be_instance_of(AxR::Scanner)
@@ -39,7 +39,7 @@ RSpec.describe AxR::Scanner do
     end
 
     context 'no context' do
-      let(:file_path) { 'spec/examples/one/lib/api/no_context.rb' }
+      let(:file_path) { 'spec/examples/one/lib/no_context.rb' }
 
       it 'extract file entities' do
         expect(result).to be_instance_of(AxR::Scanner)
@@ -58,7 +58,7 @@ RSpec.describe AxR::Scanner do
     end
 
     context 'mid level' do
-      let(:file_path) { 'spec/examples/one/lib/logic/logic.rb' }
+      let(:file_path) { 'spec/examples/one/lib/logic.rb' }
 
       it 'extract file entities' do
         expect(result).to be_instance_of(AxR::Scanner)

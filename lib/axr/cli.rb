@@ -7,8 +7,11 @@ module AxR
     desc 'check PATH', 'Start AxR runner'
 
     option :format # TODO: Add formats
+    option :load # TODO: Add formats
 
     def check(pattern = nil)
+      $LOAD_PATH << Dir.pwd
+      require options['load'] if options['load']
       AxR::Runner.new(pattern).invoke
     end
   end
