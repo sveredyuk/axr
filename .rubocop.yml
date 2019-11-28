@@ -24,7 +24,7 @@ Metrics/MethodLength:
 Metrics/ClassLength:
   Max: 150
 
-Layout/AlignHash:
+Layout/HashAlignment:
   EnforcedColonStyle: table
   EnforcedHashRocketStyle: table
 

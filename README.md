@@ -10,12 +10,54 @@ This is just reality.
 
 (c) Me
 
+### Setup
 
-### Why
-...
+```sh
+gem install axr
+```
 
-### Layers
-...
+or in your Gemfile:
+```ruby
+gem 'axr', '~> 0.5'
+```
+
+```sh
+bundle install
+```
+
+Somewhere in your ruby app:
+```ruby
+require 'axr'
+
+AxR.app.define do
+  layer 'Api'
+  layer 'YourBusinessLogic'
+  layer 'Repo'
+end
+```
+
+Run `AxR` checker in console
+```sh
+axr check . --load path/to/you/app/autoload.rb
+```
+
+For rails apps
+```sh
+axr check . --load config/environment
+```
+
+Run for a specific directory
+```sh
+axr lib/adapters
+```
+
+Run for a specific file
+```sh
+axr lib/adapters/youtube.rb
+```
+
+### How it works
+...TODO
 
 ### TODO
-...
+- Add sublayers
