@@ -10,20 +10,21 @@ module AxR
 
     LayerConflictError = Class.new(StandardError)
 
-    attr_reader :layers
+    attr_reader :layers, :default_options
 
     def initialize
       @layers = []
     end
 
-    def define(&block)
+    def define(default_options = {}, &block)
+      @default_options = default_options
       instance_eval(&block)
     end
 
     def layer(layer_name, options = {})
       check_name_conflict!(layer_name)
 
-      layers << AxR::Layer.new(layer_name, layers.size, options)
+      layers << AxR::Layer.new(layer_name, layers.size, default_options.merge(options))
     end
 
     def layer_names
