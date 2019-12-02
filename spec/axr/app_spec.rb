@@ -10,9 +10,9 @@ RSpec.describe AxR::App do
       AxR.app.send(:reset)
 
       AxR.app.define(isolated: true) do
-        layer Api, isolated: false
+        layer Api, isolated: false, familiar_with: [Isolated, Logic]
         layer Isolated
-        layer Logic
+        layer Logic, familiar_with: Repo
         layer Repo
       end
     end
@@ -25,6 +25,30 @@ RSpec.describe AxR::App do
         expect(AxR.app.layers[1].isolated).to eq true
         expect(AxR.app.layers[2].isolated).to eq true
         expect(AxR.app.layers[3].isolated).to eq true
+      end
+    end
+
+    describe 'legal?' do
+      it 'isolated by defaul but can be familiar_with' do
+        expect(AxR.app.legal?(Api, Api)).to eq false
+        expect(AxR.app.legal?(Api, Isolated)).to eq true
+        expect(AxR.app.legal?(Api, Logic)).to eq true
+        expect(AxR.app.legal?(Api, Repo)).to eq true
+
+        expect(AxR.app.legal?(Isolated, Isolated)).to eq false
+        expect(AxR.app.legal?(Isolated, Api)).to eq false
+        expect(AxR.app.legal?(Isolated, Logic)).to eq false
+        expect(AxR.app.legal?(Isolated, Repo)).to eq false
+
+        expect(AxR.app.legal?(Logic, Logic)).to eq false
+        expect(AxR.app.legal?(Logic, Api)).to eq false
+        expect(AxR.app.legal?(Logic, Isolated)).to eq false
+        expect(AxR.app.legal?(Logic, Repo)).to eq true
+
+        expect(AxR.app.legal?(Repo, Repo)).to eq false
+        expect(AxR.app.legal?(Repo, Api)).to eq false
+        expect(AxR.app.legal?(Repo, Isolated)).to eq false
+        expect(AxR.app.legal?(Repo, Logic)).to eq false
       end
     end
   end
