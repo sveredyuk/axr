@@ -56,7 +56,7 @@ RSpec.describe AxR::Runner do
       it 'scan given dir' do
         runner = described_class.new('spec/examples/one/lib')
         expect(runner.files_to_scan.size).to eq 5
-        expect(runner.files_to_scan).to eq(
+        expect(runner.files_to_scan).to match_array(
           [
             'spec/examples/one/lib/repo.rb',
             'spec/examples/one/lib/api.rb',
