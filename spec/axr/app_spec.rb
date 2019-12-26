@@ -18,7 +18,7 @@ RSpec.describe AxR::App do
     end
 
     describe 'DSL' do
-      it 'compolse layers with default options' do
+      it 'compose layers with default options' do
         expect(AxR.app.layers.size).to eq 4
 
         expect(AxR.app.layers[0].isolated).to eq false
@@ -29,7 +29,7 @@ RSpec.describe AxR::App do
     end
 
     describe 'legal?' do
-      it 'isolated by defaul but can be familiar_with' do
+      it 'isolated by default but can be familiar_with' do
         expect(AxR.app.legal?(Api, Api)).to eq false
         expect(AxR.app.legal?(Api, Isolated)).to eq true
         expect(AxR.app.legal?(Api, Logic)).to eq true
@@ -98,7 +98,7 @@ RSpec.describe AxR::App do
         expect(AxR.app.layer_names).to eq %w[Api Isolated Logic Repo]
       end
 
-      it 'can has layer conflic' do
+      it 'can have layer conflicts' do
         expect do
           AxR.app.define do |axr|
             axr.layer Api

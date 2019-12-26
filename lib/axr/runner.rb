@@ -32,7 +32,7 @@ module AxR
       @files_to_scan ||= if scan_single_file?
                            [target]
                          else
-                           Dir.glob("#{target_dir}**/*.rb")
+                           Dir.glob("#{target_dir}**/*#{DOT_RB}")
                          end
     end
 
