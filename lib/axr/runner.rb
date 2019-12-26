@@ -16,8 +16,9 @@ module AxR
 
     def invoke
       files_with_warnings = files_to_scan.each_with_object({}) do |file_path, issues|
-        scan_result = AxR::Scanner.new(file_path: file_path).scan
+        scan_result       = AxR::Scanner.new(file_path: file_path).scan
         issues[file_path] = scan_result.warnings if scan_result.warnings.any?
+
         formatter.single_file(scan_result, file_path)
       end
 
@@ -29,11 +30,7 @@ module AxR
     end
 
     def files_to_scan
-      @files_to_scan ||= if scan_single_file?
-                           [target]
-                         else
-                           Dir.glob("#{target_dir}**/*.rb")
-                         end
+      @files_to_scan ||= scan_single_file? ? [target] : Dir.glob("#{target_dir}**/*#{DOT_RB}")
     end
 
     private
