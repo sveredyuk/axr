@@ -1,8 +1,11 @@
+require: rubocop
+
 AllCops:
   TargetRubyVersion: 2.6
   Exclude:
     - bin/*
     - Guardfile
+    - vendor/**/*
 
 Style/Documentation:
   Enabled: false
@@ -12,9 +15,17 @@ Metrics/LineLength:
 
 Metrics/BlockLength:
   ExcludedMethods: [
-    'describe', 'xdescribe', 'context',  'xcontext', 'it', 'xit', 'let', 'before', 'after', 'aggregate_failures'
+    'describe',
+    'xdescribe',
+    'context',
+    'xcontext',
+    'it',
+    'xit',
+    'let',
+    'before',
+    'after',
+    'aggregate_failures'
   ]
-
 
 Metrics/MethodLength:
   Max: 15

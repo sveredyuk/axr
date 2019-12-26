@@ -73,10 +73,10 @@ RSpec.describe AxR::Scanner do
         expect(result.dependecies[0].loc).to     eq 'Repo::User.first'
         expect(result.dependecies[0].loc_num).to eq 6
         expect(result.dependecies[1]).to         be_instance_of(AxR::Scanner::Detection)
-        expect(result.dependecies[1].loc).to eq 'Api::Controller.new.call'
+        expect(result.dependecies[1].loc).to     eq 'Api::Controller.new.call'
         expect(result.dependecies[1].loc_num).to eq 7
         expect(result.dependecies[2]).to         be_instance_of(AxR::Scanner::Detection)
-        expect(result.dependecies[2].loc).to eq 'Repo::User.last'
+        expect(result.dependecies[2].loc).to     eq 'Repo::User.last'
         expect(result.dependecies[2].loc_num).to eq 8
 
         expect(result.warnings.size).to       eq 1

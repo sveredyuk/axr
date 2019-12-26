@@ -19,11 +19,12 @@ RSpec.describe AxR::Runner do
 
       it 'scan single file with default formatter' do
         runner = described_class.new(file_path)
-        res = runner.invoke
-        expect(res).to be_instance_of(Hash)
-        expect(res.keys).to eq [file_path]
-        expect(res[file_path].size).to eq 1
-        expect(res[file_path][0]).to be_instance_of(AxR::Scanner::Warning)
+        result = runner.invoke
+
+        expect(result).to                 be_instance_of(Hash)
+        expect(result.keys).to            eq [file_path]
+        expect(result[file_path].size).to eq 1
+        expect(result[file_path][0]).to   be_instance_of(AxR::Scanner::Warning)
       end
     end
   end
@@ -32,6 +33,7 @@ RSpec.describe AxR::Runner do
     context 'with no arguments' do
       it 'all dir/files' do
         runner = described_class.new
+
         expect(runner.files_to_scan).to eq Dir.glob('**/*.rb')
       end
     end
@@ -39,14 +41,16 @@ RSpec.describe AxR::Runner do
     context 'with arguments' do
       it 'only given file' do
         runner = described_class.new('spec/examples/one/lib/api.rb')
+
         expect(runner.files_to_scan.size).to eq 1
-        expect(runner.files_to_scan).to eq ['spec/examples/one/lib/api.rb']
+        expect(runner.files_to_scan).to      eq ['spec/examples/one/lib/api.rb']
       end
 
       it 'scan given dir with single file' do
         runner = described_class.new('spec/examples/one/lib/isolated')
+
         expect(runner.files_to_scan.size).to eq 1
-        expect(runner.files_to_scan).to eq(
+        expect(runner.files_to_scan).to      match_array(
           [
             'spec/examples/one/lib/isolated/isolated.rb'
           ]
@@ -55,8 +59,9 @@ RSpec.describe AxR::Runner do
 
       it 'scan given dir' do
         runner = described_class.new('spec/examples/one/lib')
+
         expect(runner.files_to_scan.size).to eq 5
-        expect(runner.files_to_scan).to match_array(
+        expect(runner.files_to_scan).to      match_array(
           [
             'spec/examples/one/lib/repo.rb',
             'spec/examples/one/lib/api.rb',

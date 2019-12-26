@@ -30,12 +30,12 @@ Gem::Specification.new do |spec|
   spec.require_paths = 'lib'
 
   spec.add_dependency 'colorize', '~> 0.8.1'
-  spec.add_dependency 'thor', '~> 0.20'
+  spec.add_dependency 'thor',     '~> 0.20'
 
-  spec.add_development_dependency 'bundler', '~> 2.0'
+  spec.add_development_dependency 'bundler',     '~> 2.0'
   spec.add_development_dependency 'guard-rspec', '~> 4.7.3'
-  spec.add_development_dependency 'pry', '~> 0.12.2'
-  spec.add_development_dependency 'rake', '~> 10.0'
-  spec.add_development_dependency 'rspec', '~> 3.0'
-  spec.add_development_dependency 'rubocop', '~> 0.76.0'
+  spec.add_development_dependency 'pry',         '~> 0.12.2'
+  spec.add_development_dependency 'rake',        '~> 10.0'
+  spec.add_development_dependency 'rspec',       '~> 3.0'
+  spec.add_development_dependency 'rubocop',     '~> 0.76.0'
 end
