@@ -38,7 +38,7 @@ module AxR
 
       return false unless ctx && dep
       return false if ctx.isolated? && ctx.familiar_with.empty?
-      return true if ctx.familiar_with.map(&:to_s).include?(dependncy.to_s)
+      return true  if ctx.familiar_with.map(&:to_s).include?(dependncy.to_s)
 
       ctx.level < dep.level
     end
