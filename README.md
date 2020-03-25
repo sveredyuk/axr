@@ -2,11 +2,12 @@
 
 **Ruby architecture for simplicity and team adoption**
 
-Architecture is hard. It’s very easy to build a complex system; much harder to build a simple and adaptable one. The code doesn't matter and coding for the sake of writing code is foolish.
+Architecture's hard. It’s very easy to build a complex system. Much harder to build a simple and adaptable solution. The code doesn't matter. Coding for the sake of writing code is foolish.
 
-Few of us get to write software that survives 5-10 years or longer. 90% of our work is garbage that becomes obsolete 1-3 years after release. Most of our work hours are wasted on features that never get shipped.
+Only a few of us get to write software that survives 5-10 years or longer. 90% of our work is garbage that becomes obsolete in 1-3 years after release. Most of our work hours are wasted on features that will never be useful.
 
-This is just reality.
+This is just a reality.
+
 
 (c) Volodya Sveredyuk
 
@@ -28,7 +29,7 @@ bundle install
 
 ## DSL
 
-In your ruby app: (for rails app put it into `config/initializers`)
+In your ruby app: (for rails app put it into `config/initializers/axr.rb` file)
 ```ruby
 require 'axr'
 
@@ -104,6 +105,11 @@ Run for a specific file
 axr lib/adapters/youtube.rb
 ```
 
+Finish scanning with status code 1 in case of any warnings (you can use in CI environment to fail pipeline step)
+```sh
+axr check --exit-on-warning`
+```
+
 ## More examples
 
 **ERP system**
@@ -111,20 +117,24 @@ axr lib/adapters/youtube.rb
 <img src="docs/images/erp_example.png" alt="drawing" width="500"/>
 
 ```ruby
-require 'axr'
+if Rails.env.development? || Rails.env.test?
+  require 'axr'
 
-AxR.app.define(isolated: true) do
-  layer 'Api',    familiar_with: ['ERP']
-  layer 'UI',     familiar_with: ['ERP']
-  layer 'ERP',    familiar_with: %w[Inventory Sales Supply]
-  layer 'Sales',  familiar_with: 'Inventory'
-  layer 'Supply', familiar_with: 'Inventory'
-  layer 'Repo'
-  layer 'Change'
-  layer 'Query'
+  AxR.app.define(isolated: true) do
+    layer 'UI',         familiar_with: %w[Docs Inventory Production]
+    layer 'API',        familiar_with: %w[Docs Inventory Production]
+    layer 'Docs',       familiar_with: %w[Inventory Accounts Repo]
+    layer 'Accounts',   familiar_with: %w[Repo]
+    layer 'Inventory',  familiar_with: %w[Repo]
+    layer 'Production', familiar_with: %w[Repo]
+    layer 'Repo'
+  end
 end
+
 ```
 
 ### TODO
 - Add sublayers
-- Add `axr check --exit-on-warning` cli flag
+- Add rubocop cop
+- Add more app examples
+- Migrate to AST analyzer

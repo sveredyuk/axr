@@ -27,6 +27,14 @@ RSpec.describe AxR::Runner do
         expect(result[file_path][0]).to   be_instance_of(AxR::Scanner::Warning)
       end
     end
+
+    context 'with exit_on_warnings' do
+      it 'exit with SystemExit' do
+        runner = described_class.new('spec/examples/one/lib/logic.rb', exit_on_warnings: true)
+
+        expect { runner.invoke }.to raise_error(SystemExit)
+      end
+    end
   end
 
   describe '#files_to_scan' do

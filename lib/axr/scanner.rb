@@ -5,10 +5,10 @@ require_relative 'scanner/warning'
 
 module AxR
   class Scanner
-    attr_reader :file_path, :context, :dependecies, :warnings
+    attr_reader :source, :context, :dependecies, :warnings
 
-    def initialize(file_path:)
-      @file_path   = file_path
+    def initialize(source: [])
+      @source      = source
       @dependecies = []
       @warnings    = []
       @context     = nil
@@ -16,7 +16,7 @@ module AxR
 
     # rubocop:disable Metrics/AbcSize
     def scan
-      File.open(file_path).each.with_index do |line, index|
+      source.each.with_index do |line, index|
         loc_num = index + 1
 
         line_detection    = AxR.app.layer_names.detect { |layer| line.include?(layer) }

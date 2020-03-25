@@ -9,17 +9,17 @@ RSpec.describe AxR::Scanner do
     AxR.app.send(:reset)
 
     AxR.app.define do
-      layer Api
-      layer Logic
-      layer Repo, isolated: true
+      layer 'Api'
+      layer 'Logic'
+      layer 'Repo', isolated: true
     end
   end
 
-  let(:result) { described_class.new(file_path: file_path).scan }
+  let(:result) { described_class.new(source: source).scan }
 
   describe '#scan' do
     context 'top level' do
-      let(:file_path) { 'spec/examples/one/lib/api.rb' }
+      let(:source) { File.open 'spec/examples/one/lib/api.rb' }
 
       it 'extract file entities' do
         expect(result).to be_instance_of(AxR::Scanner)
@@ -39,7 +39,7 @@ RSpec.describe AxR::Scanner do
     end
 
     context 'no context' do
-      let(:file_path) { 'spec/examples/one/lib/no_context.rb' }
+      let(:source) { File.open 'spec/examples/one/lib/no_context.rb' }
 
       it 'extract file entities' do
         expect(result).to be_instance_of(AxR::Scanner)
@@ -58,7 +58,7 @@ RSpec.describe AxR::Scanner do
     end
 
     context 'mid level' do
-      let(:file_path) { 'spec/examples/one/lib/logic.rb' }
+      let(:source) { File.open 'spec/examples/one/lib/logic.rb' }
 
       it 'extract file entities' do
         expect(result).to be_instance_of(AxR::Scanner)
@@ -84,6 +84,37 @@ RSpec.describe AxR::Scanner do
         expect(result.warnings[0].message).to eq 'Logic layer should not be familiar with Api'
         expect(result.warnings[0].loc).to     eq 'Api::Controller.new.call'
         expect(result.warnings[0].loc_num).to eq 7
+      end
+    end
+
+    context 'nested modules' do
+      let(:source) do
+        "
+        module Repo
+          module Logic
+          end
+        end
+        ".split("\n")
+      end
+
+      it 'extract file entities' do
+        expect(result).to be_instance_of(AxR::Scanner)
+
+        expect(result.context).to          be_instance_of(AxR::Scanner::Detection)
+        expect(result.context.loc).to      eq 'module Repo'
+        expect(result.context.loc_num).to  eq 2
+        expect(result.context.name).to     eq 'Repo'
+
+        expect(result.dependecies.size).to       eq 1
+        expect(result.dependecies[0]).to         be_instance_of(AxR::Scanner::Detection)
+        expect(result.dependecies[0].loc).to     eq 'module Logic'
+        expect(result.dependecies[0].loc_num).to eq 3
+
+        expect(result.warnings.size).to       eq 1
+        expect(result.warnings[0]).to         be_instance_of(AxR::Scanner::Warning)
+        expect(result.warnings[0].message).to eq 'Repo layer should not be familiar with Logic'
+        expect(result.warnings[0].loc).to     eq 'module Logic'
+        expect(result.warnings[0].loc_num).to eq 3
       end
     end
   end

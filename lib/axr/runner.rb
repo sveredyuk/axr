@@ -7,16 +7,19 @@ module AxR
   class Runner
     DOT_RB = '.rb'
 
-    attr_reader :target, :formatter
+    attr_reader :target, :formatter, :exit_on_warnings
 
-    def initialize(target = nil, formatter: AxR::Formatters::Default.new)
-      @target    = target
-      @formatter = formatter
+    def initialize(target = nil, formatter: AxR::Formatters::Default.new, exit_on_warnings: false)
+      @target            = target
+      @formatter         = formatter
+      @exit_on_warnings = exit_on_warnings
     end
+
+    alias exit_on_warnings? exit_on_warnings
 
     def invoke
       files_with_warnings = files_to_scan.each_with_object({}) do |file_path, issues|
-        scan_result       = AxR::Scanner.new(file_path: file_path).scan
+        scan_result       = AxR::Scanner.new(source: File.open(file_path)).scan
         issues[file_path] = scan_result.warnings if scan_result.warnings.any?
 
         formatter.single_file(scan_result, file_path)
@@ -24,7 +27,7 @@ module AxR
 
       formatter.summary(files_to_scan, files_with_warnings)
 
-      # exit 1 if files_with_warnings.any?
+      exit 1 if exit_on_warnings? && files_with_warnings.any?
 
       files_with_warnings
     end
