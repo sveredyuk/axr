@@ -20,7 +20,7 @@ I hate doing something alone. I am a team player and as a team player, I prefer 
 
 Architecture's about knowledge responsibility and not the code.
 
-The worst thing that even we write te architecture document wherein convenient way to agree on architecture and layers and entities, etc - We are not protected from violation of these conventions.
+The worst thing that even we write the architecture document wherein convenient way to agree on architecture and layers and entities, etc - We are not protected from violation of these conventions.
 
 And this the place where AxR comes on stage.
 
@@ -143,7 +143,9 @@ end
 ```
 
 ### TODO
+- Ignore vendor or any other directories dir as configuration
 - Add sublayers
 - Add rubocop cop
 - Add more app examples
 - Migrate to AST analyzer
+
