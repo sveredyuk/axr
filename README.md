@@ -11,20 +11,29 @@ This is just a reality.
 
 (c) Volodya Sveredyuk
 
+## Motivation
+Application engineering it's always about abstractions and how they describe the real world and business which pays our salaries for coding something that might improve it. Maybe. Sometimes.
+
+I hate doing something alone. I am a team player and as a team player, I prefer conventions over configuration. But this is not working with knowledge responsibility segregation inside the software app. In the Ruby world (especially Rails) it's so easy to add a new feature. Just add one line, one dependency, one callback and now you share knowledge about one entity into another entity. More dependencies - more spaghetti and legacy that in future we should REWRITE EVERYTHING!
+
+<img src="docs/images/rewrite.png" alt="drawing" width="500"/>
+
+Architecture's about knowledge responsibility and not the code.
+
+The worst thing that even we write te architecture document wherein convenient way to agree on architecture and layers and entities, etc - We are not protected from violation of these conventions.
+
+And this the place where AxR comes on stage.
+
+Please, welcome the **DSL** that helps:
+1. Describes your application layers (modules)
+2. Defines knowledge responsibilities between them
+3. Checks if you did not violate anything
+
 ## Setup
 
-```sh
-gem install axr
-```
-
-or in your Gemfile
+In your Gemfile
 ```ruby
 gem 'axr'
-```
-
-in console
-```sh
-bundle install
 ```
 
 ## DSL
@@ -107,7 +116,7 @@ axr lib/adapters/youtube.rb
 
 Finish scanning with status code 1 in case of any warnings (you can use in CI environment to fail pipeline step)
 ```sh
-axr check --exit-on-warning`
+axr check --exit-on-warnings
 ```
 
 ## More examples
