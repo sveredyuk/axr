@@ -21,13 +21,14 @@ module AxR
 
         line_detection    = AxR.app.layer_names.detect { |layer| line.include?(layer) }
         line_detection    = check_space_before(line, line_detection)
-        context_detection = AxR.app.layer_names.detect { |layer| line.include?("module #{layer}") }
+        line_detection    = nil if context && module_definition?(line, line_detection)
+        context_detection = AxR.app.layer_names.detect { |layer| module_definition?(line, layer) }
 
-        next unless line_detection || context_detection
+        next unless context_detection || line_detection
 
         detect_context(context_detection, line, loc_num) if context_detection && !context
         detect_dependency(line_detection, line, loc_num)
-        detect_warning(line_detection,    line, loc_num) if context
+        detect_warning(line_detection,    line, loc_num) if context && line_detection
       end
 
       self
@@ -65,6 +66,12 @@ module AxR
       return unless line_detection
 
       line_detection if line[line.index(line_detection) - 1] == SPACE
+    end
+
+    MODULE = 'module'
+
+    def module_definition?(line, layer)
+      line.include?("#{MODULE} #{layer}")
     end
   end
 end

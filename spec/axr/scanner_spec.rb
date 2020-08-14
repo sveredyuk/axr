@@ -92,6 +92,8 @@ RSpec.describe AxR::Scanner do
         "
         module Repo
           module Logic
+            module Api
+            end
           end
         end
         ".split("\n")
@@ -105,16 +107,16 @@ RSpec.describe AxR::Scanner do
         expect(result.context.loc_num).to  eq 2
         expect(result.context.name).to     eq 'Repo'
 
-        expect(result.dependecies.size).to       eq 1
+        expect(result.dependecies.size).to       eq 2
         expect(result.dependecies[0]).to         be_instance_of(AxR::Scanner::Detection)
         expect(result.dependecies[0].loc).to     eq 'module Logic'
         expect(result.dependecies[0].loc_num).to eq 3
 
-        expect(result.warnings.size).to       eq 1
-        expect(result.warnings[0]).to         be_instance_of(AxR::Scanner::Warning)
-        expect(result.warnings[0].message).to eq 'Repo layer should not be familiar with Logic'
-        expect(result.warnings[0].loc).to     eq 'module Logic'
-        expect(result.warnings[0].loc_num).to eq 3
+        expect(result.dependecies[1]).to         be_instance_of(AxR::Scanner::Detection)
+        expect(result.dependecies[1].loc).to     eq 'module Api'
+        expect(result.dependecies[1].loc_num).to eq 4
+
+        expect(result.warnings.size).to eq 0
       end
     end
   end
