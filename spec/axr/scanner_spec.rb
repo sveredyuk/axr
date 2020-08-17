@@ -119,5 +119,38 @@ RSpec.describe AxR::Scanner do
         expect(result.warnings.size).to eq 0
       end
     end
+
+    context 'with comments' do
+      let(:source) do
+        "
+        module Repo
+          def something
+            1 + 1 # TODO: Maybe this should be part of Logic module
+          end
+
+          def other
+            Logic.method
+          end
+        end
+        ".split("\n")
+      end
+
+      it 'extract file entities' do
+        expect(result).to be_instance_of(AxR::Scanner)
+
+        expect(result.context).to          be_instance_of(AxR::Scanner::Detection)
+        expect(result.context.loc).to      eq 'module Repo'
+        expect(result.context.loc_num).to  eq 2
+        expect(result.context.name).to     eq 'Repo'
+
+        expect(result.dependecies.size).to       eq 1
+        expect(result.dependecies[0]).to         be_instance_of(AxR::Scanner::Detection)
+        expect(result.dependecies[0].name).to    eq 'Logic'
+        expect(result.dependecies[0].loc).to     eq 'Logic.method'
+        expect(result.dependecies[0].loc_num).to eq 8
+
+        expect(result.warnings.size).to eq 1
+      end
+    end
   end
 end

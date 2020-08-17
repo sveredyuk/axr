@@ -15,6 +15,8 @@ module AxR
     end
 
     # rubocop:disable Metrics/AbcSize
+    # rubocop:disable Metrics/CyclomaticComplexity
+    # rubocop:disable Metrics/PerceivedComplexity
     def scan
       source.each.with_index do |line, index|
         loc_num = index + 1
@@ -22,6 +24,7 @@ module AxR
         line_detection    = AxR.app.layer_names.detect { |layer| line.include?(layer) }
         line_detection    = check_space_before(line, line_detection)
         line_detection    = nil if context && module_definition?(line, line_detection)
+        line_detection    = nil if commented?(line, line_detection)
         context_detection = AxR.app.layer_names.detect { |layer| module_definition?(line, layer) }
 
         next unless context_detection || line_detection
@@ -34,6 +37,8 @@ module AxR
       self
     end
     # rubocop:enable Metrics/AbcSize
+    # rubocop:enable Metrics/CyclomaticComplexity
+    # rubocop:enable Metrics/PerceivedComplexity
 
     private
 
@@ -72,6 +77,14 @@ module AxR
 
     def module_definition?(line, layer)
       line.include?("#{MODULE} #{layer}")
+    end
+
+    COMMENT = '#'
+
+    def commented?(line, layer)
+      return false if line.empty? || layer.nil?
+
+      line.split(layer).first&.include?(COMMENT)
     end
   end
 end

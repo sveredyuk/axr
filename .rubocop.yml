@@ -1,7 +1,8 @@
 require: rubocop
 
 AllCops:
-  TargetRubyVersion: 2.6
+  TargetRubyVersion: 2.4
+  NewCops: disable
   Exclude:
     - bin/*
     - Guardfile
@@ -10,7 +11,7 @@ AllCops:
 Style/Documentation:
   Enabled: false
 
-Metrics/LineLength:
+Layout/LineLength:
   Max: 120
 
 Metrics/AbcSize:

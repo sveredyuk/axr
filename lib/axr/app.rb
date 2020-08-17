@@ -32,6 +32,8 @@ module AxR
     end
 
     # rubocop:disable Metrics/AbcSize
+    # rubocop:disable Metrics/CyclomaticComplexity
+    # rubocop:disable Metrics/PerceivedComplexity
     def legal?(context, dependncy)
       ctx = layers.find { |l| l.name.to_s == context.to_s }
       dep = layers.find { |l| l.name.to_s == dependncy.to_s }
@@ -43,6 +45,8 @@ module AxR
       ctx.level < dep.level
     end
     # rubocop:enable Metrics/AbcSize
+    # rubocop:enable Metrics/CyclomaticComplexity
+    # rubocop:enable Metrics/PerceivedComplexity
 
     private
 
