@@ -33,7 +33,7 @@ Please, welcome the **DSL** that helps:
 
 In your Gemfile
 ```ruby
-gem 'axr', group: :devlopment
+gem 'axr', group: :development
 ```
 
 ## DSL
