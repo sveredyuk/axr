@@ -40,7 +40,7 @@ gem 'axr'
 
 In your ruby app: (for rails app put it into `config/initializers/axr.rb` file)
 ```ruby
-require 'axr'
+require 'axr', group: :development
 
 AxR.app.define do
   layer 'Api'
