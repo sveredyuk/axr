@@ -33,14 +33,14 @@ Please, welcome the **DSL** that helps:
 
 In your Gemfile
 ```ruby
-gem 'axr'
+gem 'axr', group: :devlopment
 ```
 
 ## DSL
 
 In your ruby app: (for rails app put it into `config/initializers/axr.rb` file)
 ```ruby
-require 'axr', group: :development
+require 'axr'
 
 AxR.app.define do
   layer 'Api'
